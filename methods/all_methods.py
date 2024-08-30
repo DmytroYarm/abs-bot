@@ -80,3 +80,31 @@ class AllMethods:
                 os.remove(file_path)
                 print(f"Файл {filename} успешно удален")
 
+
+    @staticmethod
+    def fill_cells_in_column(file_path, target_column_name, value):
+        with open(file_path, 'r') as input_file:
+            output_lines = []
+            lines = input_file.readlines()
+
+            header = lines[0].strip().split(';')
+            try:
+                target_index = header.index(target_column_name)
+            except ValueError:
+                print(f"Column '{target_column_name}' not found in the file.")
+                return
+
+            for index, line in enumerate(lines):
+                columns = line.strip().split(';')
+
+                if index == 0:
+                    output_lines.append(line)
+                    continue
+
+                columns[target_index] = value
+
+                updated_line = ';'.join(columns) + '\n'
+                output_lines.append(updated_line)
+
+        with open(file_path, 'w') as output_file:
+            output_file.writelines(output_lines)

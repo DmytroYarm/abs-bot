@@ -19,10 +19,10 @@ class EmexMain:
                                                                     local_path)
             txt = EmexMethods.remove_string_from_csv_files(local_path)
             EmexMethods.rename_csv_files_by_data(local_path, EmexData.emex_data)
-            # EmexMethods.upload_files_to_ftp(local_path, EmexCredentials.emex_server, EmexCredentials.emex_port,
-            #                                EmexCredentials.emex_username, EmexCredentials.emex_password,
-            #                                EmexCredentials.emex_path,
-            #                                '.csv')
+            EmexMethods.upload_files_to_ftp(local_path, EmexCredentials.emex_server, EmexCredentials.emex_port,
+                                           EmexCredentials.emex_username, EmexCredentials.emex_password,
+                                           EmexCredentials.emex_path,
+                                           '.csv')
             AllMethods.move_files_to_archive(local_path, '.csv', 7)
             AllMethods.delete_files_in_folder_by_format(local_path, '.csv')
             return f'<b><u>Перелік файлів з наявністю за {datetime.now().date()}:</u>\n{txt}</b>'

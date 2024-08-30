@@ -34,7 +34,7 @@ class EmexMethods(AllMethods):
 
 
     @staticmethod
-    def remove_string_from_csv_files(directory):
+    def remove_string_from_csv_files(directory, value='PAK', target_column_name='"price_code"'):
         log_file = './error_log.txt'
         if os.path.exists(log_file):
             file_age = datetime.now() - datetime.fromtimestamp(os.path.getmtime(log_file))
@@ -47,6 +47,8 @@ class EmexMethods(AllMethods):
             if filename.endswith(".csv"):
                 file_path = os.path.join(directory, filename)
 
+                AllMethods.fill_cells_in_column(file_path, '"stock_quantity"', 100)
+
                 with open(file_path, 'r') as input_file:
                     output_lines = []
                     lines = input_file.readlines()
@@ -55,10 +57,17 @@ class EmexMethods(AllMethods):
                     output_lines.append(lines[1])
 
                     if len(lines) > 2:
-
+                        try:
+                            header = lines[0].strip().split(';')
+                            target_index = header.index(target_column_name)
+                        except ValueError as e:
+                            with open(log_file, 'a') as log:
+                                log.write(f'ERROR in file {filename}: Column {target_column_name} not found\n')
+                            continue
                         for line in lines[2:]:
+                            columns = line.strip().split(';')
                             try:
-                                if 'PAK' not in line:
+                                if value not in columns[target_index]:
                                     output_lines.append(line)
                             except Exception as e:
                                 with open(log_file, 'a') as log:
