@@ -47,7 +47,7 @@ class EmexMethods(AllMethods):
             if filename.endswith(".csv"):
                 file_path = os.path.join(directory, filename)
 
-                AllMethods.fill_cells_in_column(file_path, '"stock_quantity"', 100)
+                AllMethods.fill_cells_in_column(file_path, '"stock_quantity"', '100')
 
                 with open(file_path, 'r') as input_file:
                     output_lines = []
